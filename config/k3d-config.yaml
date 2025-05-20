@@ -1,0 +1,53 @@
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+
+kubeAPI:
+  hostIP: "0.0.0.0"
+  hostPort: "6443"
+
+image: rancher/k3s:v1.30.6-k3s1
+
+volumes:
+- volume: /home/cristiano/k3dvol:/tmp/k3dvol
+  nodeFilters:
+  - server:0
+  - agent:*
+
+registries:
+  config: |
+    mirrors:
+      "cdnsistemas.registry.local:5000":
+        endpoint:
+          - http://cdnsistemas.registry.local:5000
+
+hostAliases:
+  - ip: 192.168.1.38
+    hostnames:
+      - cdnsistemas.database.local
+      - cdnsistemas.registry.local
+
+ports:
+  - port: 8080:80
+    nodeFilters:
+      - server:0
+  - port: 8443:443
+    nodeFilters:
+      - server:0
+
+options:
+  k3d:
+    wait: true
+    timeout: 180s
+    disableLoadbalancer: false
+    disableImageVolume: false
+    disableRollback: false
+  
+  k3s:
+    extraArgs:
+      - arg: --disable=traefik
+        nodeFilters:
+          - server:*
+
+  kubeconfig:
+    updateDefaultKubeconfig: true
+    switchCurrentContext: true
