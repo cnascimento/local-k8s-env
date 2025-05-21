@@ -16,15 +16,15 @@ volumes:
 registries:
   config: |
     mirrors:
-      "cdnsistemas.registry.local:5000":
+      "registry.cdnsistemas.local:80":
         endpoint:
-          - http://cdnsistemas.registry.local:5000
+          - http://registry.cdnsistemas.local:80
 
 hostAliases:
   - ip: 192.168.1.38
     hostnames:
-      - cdnsistemas.database.local
-      - cdnsistemas.registry.local
+      - database.cdnsistemas.local
+      - registry.cdnsistemas.local
 
 ports:
   - port: 8080:80
