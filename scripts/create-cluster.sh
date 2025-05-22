@@ -1,7 +1,10 @@
 # !/bin/bash
 # This script creates a local Kubernetes cluster using k3d with the specified configuration.
-# It sets up a cluster with 1 server and 3 agents, each with specified memory limits.
 
+# It also creates a local registry for the cluster to use.
+k3d registry create registry.localhost --port 5000
+
+# It sets up a cluster with 1 server and 3 agents, each with specified memory limits.
 k3d cluster create local-cluster \
     --servers 1 --servers-memory 2Gb \
     --agents 3 --agents-memory 4Gb \

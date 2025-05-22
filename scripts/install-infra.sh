@@ -1,7 +1,6 @@
 # !/bin/bash
 # This script installs the necessary infrastructure components for the local Kubernetes cluster.
 
-helm repo add harbor https://helm.goharbor.io # Add the Harbor Helm repository
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx # Add the NGINX Ingress Controller Helm repository
 
 helm repo update
@@ -15,14 +14,14 @@ helm upgrade --install \
   --kube-context k3d-local-cluster \
 
 # Wait for the NGINX Ingress Controller to be ready
-while ! kubectl get pods -n ingress-nginx | grep -q Running; do
+while ! kubectl get pods -n ingress-nginx | grep Running; do
     sleep 5 # Wait for the NGINX Ingress Controller to be ready
 done
+sleep 18
+echo "*** NGINX Ingress Controller is ready ***"
 
-# Install the Harbor chart
 helm upgrade --install \
-  --namespace harbor \
+  --namespace production \
   --create-namespace \
-  harbor harbor/harbor \
-  -f ./helm/infra/harbor/values.yaml \
+  network-tester ./charts/network-tester \
   --kube-context k3d-local-cluster

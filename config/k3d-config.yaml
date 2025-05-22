@@ -14,17 +14,18 @@ volumes:
   - agent:*
 
 registries:
+  use:
+    - k3d-registry.localhost:5000  # Nome do registry interno
   config: |
     mirrors:
-      "registry.cdnsistemas.local:80":
+      "k3d-registry.localhost:5000":
         endpoint:
-          - http://registry.cdnsistemas.local:80
+          - http://k3d-registry.localhost:5000
 
 hostAliases:
   - ip: 192.168.1.38
     hostnames:
       - database.cdnsistemas.local
-      - registry.cdnsistemas.local
 
 ports:
   - port: 8080:80
